@@ -168,7 +168,7 @@ class SemantiCodec(nn.Module):
             overlap=SEGMENT_OVERLAP_RATIO,
         )
         print(f"16. window_length={int(512 / self.stack_factor_K)}, overlap={SEGMENT_OVERLAP_RATIO}, tokens={tokens.shape}")
-        print(f"17. {windowed_token_list.shape}, {windowed_token_list[0].shape}, {windowed_token_list[0]}")
+        print(f"17. {len(windowed_token_list)}, {windowed_token_list[0].shape}, {windowed_token_list[0]}")
 
         windowed_waveform = []
         for _, windowed_token in enumerate(windowed_token_list):
