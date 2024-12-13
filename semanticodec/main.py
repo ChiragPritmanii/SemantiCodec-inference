@@ -116,7 +116,7 @@ class SemantiCodec(nn.Module):
 
         segment_sample_length = int(SAMPLE_RATE * SEGMENT_DURATION)
         # Pad audio to the multiplication of 10.24 seconds for easier segmentations
-        print("7. {segment_sample_length}")
+        print(f"7. {segment_sample_length}")
 
         if waveform.shape[1] % segment_sample_length < segment_sample_length:
             print(f"8. {waveform.shape[1] % segment_sample_length}")
