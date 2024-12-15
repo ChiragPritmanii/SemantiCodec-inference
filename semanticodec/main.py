@@ -190,6 +190,11 @@ class SemantiCodec(nn.Module):
             )
             print(f"21. {latent.shape}")
 
+            # basically cfg scale is determining the uncoditional guidance scale 
+            # if cfg i greater than 1 (2 in this case) then unconditional input with only position encoding is provided 
+            # based on this there will be component added in the egn:
+            # model_output = model_uncond + unconditional_guidance_scale * (model_t - model_uncond)
+            # model_t is conditional output, if cfg set to 1 then only conditional output matters in the eqn 
             waveform = self.decoder.generate_sample(
                 latent,
                 ddim_steps=self.ddim_sample_step,

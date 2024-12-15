@@ -261,6 +261,7 @@ class DDIMSampler(object):
 
         return img, intermediates
 
+    # all the noisy latent with condition is passed through the model under this
     @torch.no_grad()
     def p_sample_ddim(
         self,
@@ -292,8 +293,8 @@ class DDIMSampler(object):
 
             model_uncond = self.model.apply_model(
                 x_in, t_in, unconditional_conditioning
-            )
-            model_t = self.model.apply_model(x_in, t_in, c)
+            ) # uncoditional input
+            model_t = self.model.apply_model(x_in, t_in, c) # conditional input
 
             model_output = model_uncond + unconditional_guidance_scale * (
                 model_t - model_uncond
