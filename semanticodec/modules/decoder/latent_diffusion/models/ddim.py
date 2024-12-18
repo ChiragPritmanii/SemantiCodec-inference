@@ -137,10 +137,17 @@ class DDIMSampler(object):
         #             print(f"Warning: Got {conditioning.shape[0]} conditionings but batch-size is {batch_size}")
 
         self.make_schedule(ddim_num_steps=S, ddim_eta=eta, verbose=verbose)
+        
+        print(self.betas[:5], self.betas[-5:], self.betas.shape)
+        print(self.alphas_cumprod[:5], self.alphas_cumprod[-5:], self.alphas_cumprod.shape)
+        print(self.alphas_cumprod_prev[:5], self.alphas_cumprod_prev[-5:], self.alphas_cumprod_prev.shape)
+        print(self.ddim_sigmas[:5], self.ddim_sigmas[-5:], self.ddim_sigmas.shape)
+        print(self.ddim_alphas[:5], self.ddim_alphas[-5:], self.ddim_alphas.shape)
+        
         # sampling
         C, H, W = shape
         size = (batch_size, C, H, W)
-
+        
         samples, intermediates = self.ddim_sampling(
             conditioning,
             size,
@@ -149,7 +156,7 @@ class DDIMSampler(object):
             quantize_denoised=quantize_x0,
             mask=mask,
             x0=x0,
-            ddim_use_original_steps=False,
+            ddim_use_original_steps=False, # use ddim steps 
             noise_dropout=noise_dropout,
             temperature=temperature,
             score_corrector=score_corrector,
@@ -199,6 +206,7 @@ class DDIMSampler(object):
                 if ddim_use_original_steps
                 else self.ddim_timesteps
             )
+        
         elif timesteps is not None and not ddim_use_original_steps:
             subset_end = (
                 int(
@@ -209,6 +217,8 @@ class DDIMSampler(object):
             )
             timesteps = self.ddim_timesteps[:subset_end]
 
+        print(timesteps)
+        
         intermediates = {"x_inter": [img], "pred_x0": [img]}
         time_range = (
             reversed(range(0, timesteps))
